@@ -1,4 +1,4 @@
-language: 'ko' # 한국어 리뷰
+language: 'ko-KR' # 한국어 리뷰
 early_access: false # 베타 기능 비활성화
 reviews:
   profile: 'chill' # 적절한 코드 리뷰 스타일
