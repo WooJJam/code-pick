@@ -58,13 +58,13 @@
 
 ### 3. 외부 API 연동
 
-- [ ] Solved.ac API 연동
-  - [ ] Solved.ac API 문서 리뷰 및 분석
-  - [ ] RestTemplate 또는 WebClient 설정
-  - [ ] API 호출 테스트 코드 작성
-  - [ ] 문제 검색 API 연동 구현
-  - [ ] Rate Limit 처리 로직 구현
-  - [ ] API 응답 DTO 작성
+- [x] Solved.ac API 연동
+  - [x] Solved.ac API 문서 리뷰 및 분석
+  - [x] RestTemplate 또는 WebClient 설정 (WebClient 사용)
+  - [x] API 호출 테스트 코드 작성 (총 27개 테스트 - SolvedAcClient 5개, SolvedAcService 12개, ProblemController 10개)
+  - [x] 문제 검색 API 연동 구현 (/api/v1/problems/search)
+  - [ ] Rate Limit 처리 로직 구현 (선택 사항)
+  - [x] API 응답 DTO 작성 (SolvedAcSearchResponse, SolvedAcProblemResponse, ProblemDto, SearchProblemResponse)
 
 ### 4. 사용자 인증 시스템 (Spring Security 미사용)
 
@@ -92,13 +92,13 @@
   - [ ] Problem 엔티티 (id, problemNumber, title, difficulty, tags, acceptedUserCount)
   - [ ] 테이블 스키마 설계 및 생성
   - [ ] 인덱스 설정 (problemNumber, difficulty, tags)
-- [ ] 문제 검색 API 구현
-  - [ ] 다중 필터 검색 API (/api/problems/search)
-    - [ ] 난이도 필터 (Bronze ~ Ruby)
-    - [ ] 푼 사람 수 범위 필터
-    - [ ] 알고리즘 태그 다중 선택 필터
-    - [ ] 풀이 여부 필터 (내가 푼/안 푼 문제)
-  - [ ] QueryDSL 또는 JPA Specification 설정
+- [x] 문제 검색 API 구현
+  - [x] 다중 필터 검색 API (/api/v1/problems/search)
+    - [x] 난이도 필터 (tier range: g4..s3)
+    - [x] 푼 사람 수 범위 필터 (minSolvedCount)
+    - [x] 알고리즘 태그 다중 선택 필터 (tags)
+    - [x] 풀이 여부 필터 (unsolved: true/false)
+  - [x] solved.ac 쿼리 빌더 구현 (buildQuery 메서드)
   - [ ] 페이지네이션 구현
 - [ ] 문제 캐싱 시스템
   - [ ] Redis 설정 및 연동
@@ -374,7 +374,7 @@
 
 - [ ] API 문서 작성 (Swagger/OpenAPI)
 - [ ] 사용자 가이드 작성
-- [ ] 개발자 문서 작성
+- [x] 개발자 문서 작성 (CLAUDE.md)
 - [ ] 기여 가이드 작성 (오픈소스 공개 시)
 
 ---
@@ -436,18 +436,27 @@
 
 ## 📝 현재 상태
 
-- **현재 Phase**: 준비 단계
-- **다음 작업**: Phase 1 - 프로젝트 초기 세팅
-- **우선순위**: 프로젝트 구조 설계 및 기본 환경 구축
+- **현재 Phase**: Phase 1 - MVP 문제 추천 시스템 개발 중
+- **진행 상황**:
+  - ✅ 프로젝트 초기 세팅 완료
+  - ✅ 개발 환경 및 도구 설정 완료
+  - ✅ Solved.ac API 연동 완료
+  - ✅ 문제 검색 API 구현 완료 (/api/v1/problems/search)
+- **다음 작업**:
+  - 사용자 인증 시스템 구현
+  - Problem Entity 설계 및 데이터베이스 저장
+  - 랜덤 문제 추출 기능 구현
+- **우선순위**: 문제 검색 결과를 데이터베이스에 저장하고 사용자별 문제 관리 기능 구현
 
 ---
 
 **마지막 업데이트**: 2025년 12월 2일
 **주요 변경사항**:
-- 아키텍처를 이벤트 드리븐 아키텍처(Event-Driven Architecture)로 변경
-- 데이터베이스를 PostgreSQL에서 MySQL로 변경 (선택사항)
-- 이벤트 기반 자동 동기화 로직 추가
-- Spring Security와 JWT 제거 (세션 기반 인증으로 변경)
-- Checkstyle 설정 완료 (Google Java Style Guide 기반)
-- CodeRabbit 설정 완료 (.coderabbit.yaml)
-- 코드 컨벤션 문서 작성 완료 (CODING_CONVENTION.md)
+- Solved.ac API 연동 완료 (WebClient 사용)
+- 문제 검색 API 구현 완료 (/api/v1/problems/search)
+  - 다중 필터 지원 (난이도, 태그, 푼 사람 수, 풀이 여부)
+  - solved.ac 쿼리 빌더 구현
+- Client 레이어 분리 (SolvedAcClient)
+- DTO 레이어 분리 (External API DTO vs Domain DTO)
+- 정적 팩토리 메서드 패턴 적용 (ProblemDto.from(), SearchProblemResponse.from())
+- CLAUDE.md 문서 작성 완료 (개발자 가이드)
