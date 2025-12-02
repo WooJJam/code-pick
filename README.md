@@ -1,5 +1,7 @@
 # CodePick
 
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/WooJJam/code-pick?utm_source=oss&utm_medium=github&utm_campaign=WooJJam%2Fcode-pick&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
 > 코딩 테스트 학습 자동화 플랫폼
 
 CodePick은 Solved.ac API와 Notion API를 활용하여 코딩 테스트 학습을 자동화하는 플랫폼입니다.
