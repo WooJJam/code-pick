@@ -38,15 +38,16 @@
 - [x] 필수 의존성 추가
   - [x] Spring Boot Starter Web
   - [x] Spring Boot Starter Data JPA
-  - [x] Spring Boot Starter Security
+  - [x] ~~Spring Boot Starter Security~~ (제거됨 - 사용하지 않음)
   - [x] MySQL Driver (선택사항)
   - [x] Lombok
   - [x] Spring Boot Starter Validation
   - [x] Spring Events (이벤트 드리븐 아키텍처)
   - [ ] Spring Boot Starter AMQP (메시지 큐 - RabbitMQ, 선택사항)
   - [ ] Spring Kafka (이벤트 스트리밍, 선택사항)
-- [ ] 코드 품질 도구 설정
-  - [ ] Checkstyle 또는 Google Java Format 설정
+- [x] 코드 품질 도구 설정
+  - [x] Checkstyle 설정 (Google Java Style Guide 기반)
+  - [x] CodeRabbit 설정 (.coderabbit.yaml)
   - [ ] 테스트 환경 설정 (JUnit 5, Mockito)
 - [x] 로깅 설정 (Logback)
 - [x] 이벤트 드리븐 아키텍처 기반 설정
@@ -65,23 +66,22 @@
   - [ ] Rate Limit 처리 로직 구현
   - [ ] API 응답 DTO 작성
 
-### 4. 사용자 인증 시스템
+### 4. 사용자 인증 시스템 (Spring Security 미사용)
 
 - [ ] 사용자 Entity 설계 및 생성
-  - [ ] User 엔티티 (id, username, email, password, solvedacHandle)
+  - [ ] User 엔티티 (id, username, email, solvedacHandle)
   - [ ] 테이블 스키마 설계 및 생성
-- [ ] Spring Security 설정
-  - [ ] SecurityConfig 클래스 작성
-  - [ ] JWT 인증 구현
-  - [ ] Password Encoder 설정 (BCrypt)
-- [ ] 회원가입 기능
+- [ ] ~~Spring Security 설정~~ (사용하지 않음)
+  - [ ] ~~SecurityConfig 클래스 작성~~
+  - [ ] ~~JWT 인증 구현~~
+  - [ ] ~~Password Encoder 설정 (BCrypt)~~
+- [ ] 회원가입 기능 (간소화)
   - [ ] 회원가입 API 구현 (/api/auth/signup)
   - [ ] 입력 검증 (Validation)
   - [ ] 중복 이메일/사용자명 체크
-- [ ] 로그인 기능
+- [ ] 로그인 기능 (간소화)
   - [ ] 로그인 API 구현 (/api/auth/login)
-  - [ ] JWT 토큰 발급 로직
-  - [ ] 토큰 검증 필터 구현
+  - [ ] 세션 기반 인증 구현
 - [ ] Solved.ac 계정 연동
   - [ ] Solved.ac 핸들 저장 기능
   - [ ] Solved.ac API로 사용자 정보 조회 기능
@@ -447,3 +447,7 @@
 - 아키텍처를 이벤트 드리븐 아키텍처(Event-Driven Architecture)로 변경
 - 데이터베이스를 PostgreSQL에서 MySQL로 변경 (선택사항)
 - 이벤트 기반 자동 동기화 로직 추가
+- Spring Security와 JWT 제거 (세션 기반 인증으로 변경)
+- Checkstyle 설정 완료 (Google Java Style Guide 기반)
+- CodeRabbit 설정 완료 (.coderabbit.yaml)
+- 코드 컨벤션 문서 작성 완료 (CODING_CONVENTION.md)
