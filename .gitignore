@@ -104,3 +104,6 @@ logs/
 # Project documentation
 TODO.md
 codepick_prd.docx
+
+# Serena MCP Server data
+.serena/
