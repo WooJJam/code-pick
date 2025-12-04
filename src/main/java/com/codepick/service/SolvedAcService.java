@@ -31,11 +31,14 @@ public class SolvedAcService {
         final Boolean unsolved,
         final String tierRange,
         final List<String> tags,
-        final Integer minSolvedCount
+        final Integer minSolvedCount,
+        final String direction,
+        final Integer page,
+        final String sortBy
     ) {
         String query = buildQuery(username, unsolved, tierRange, tags, minSolvedCount);
 
-        SolvedAcSearchResponse solvedAcResponse = solvedAcClient.searchProblems(query);
+        SolvedAcSearchResponse solvedAcResponse = solvedAcClient.searchProblems(query, direction, page, sortBy);
 
         return SearchProblemResponse.from(solvedAcResponse);
     }
@@ -74,7 +77,7 @@ public class SolvedAcService {
 
         // 푼 사람 수 파라미터
         if (minSolvedCount != null) {
-            queryBuilder.append("s#").append(minSolvedCount).append("..");
+            queryBuilder.append("s#").append(minSolvedCount).append(".. ");
         }
 
         return queryBuilder.toString().trim();
