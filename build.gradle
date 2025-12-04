@@ -37,7 +37,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	//MacOS에서 Netty DNS resolver 최적화
-	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.100.Final:osx-aarch_64'
+	if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
+		implementation 'io.netty:netty-resolver-dns-native-macos:4.1.100.Final:osx-aarch_64'
+	}
 
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
