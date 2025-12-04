@@ -11,6 +11,7 @@ import java.util.List;
  * 외부 API 구조 변경에 대응하기 위한 내부 전용 클래스
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SolvedAcProblemResponse {
 
     @JsonProperty("problemId")
