@@ -46,7 +46,7 @@ public class ProblemController {
 		@RequestParam(required = false, defaultValue = "id") String sortBy) {
 
 		log.info("요청 정보: username: {}, unsolved: {}, tierRange: {}, tags: {}, minSolvedCount: {}, direction: {}, page: {}, sortBy: {}",
-			username, unsolved, tierRange, tags, minSolvedCount, direction, page, sortBy);
+			username != null ? "***" : null, unsolved, tierRange, tags, minSolvedCount, direction, page, sortBy);
 
 		SearchProblemResponse response = solvedAcService.searchProblems(username, unsolved, tierRange, tags,
 			minSolvedCount, direction, page, sortBy);
