@@ -155,9 +155,52 @@ CodeRabbit is configured with:
 - Auto-review enabled on all branches
 - Request changes workflow enabled
 
+## Serena MCP Server Usage
+
+**CRITICAL**: Always use Serena's symbolic tools for code exploration and editing. Serena provides intelligent, token-efficient code manipulation.
+
+### When to Use Serena Tools
+
+1. **Code Exploration**:
+   - Use `mcp__serena__list_dir` to explore directory structure
+   - Use `mcp__serena__get_symbols_overview` to understand file structure before reading
+   - Use `mcp__serena__find_symbol` with `depth` parameter to navigate class hierarchies
+
+2. **Code Search**:
+   - Use `mcp__serena__find_symbol` with patterns (e.g., "Service", "Controller") to find classes
+   - Use `mcp__serena__search_for_pattern` for regex-based content search
+   - Use `mcp__serena__find_referencing_symbols` to understand dependencies
+
+3. **Code Editing**:
+   - Use `mcp__serena__replace_symbol_body` to replace entire methods/classes
+   - Use `mcp__serena__insert_after_symbol` to add new methods after existing ones
+   - Use `mcp__serena__insert_before_symbol` for imports or prepending code
+   - Use `mcp__serena__rename_symbol` for safe refactoring across the codebase
+
+### Example Workflow
+
+```
+1. Explore structure: mcp__serena__list_dir("src/main/java/com/codepick", recursive=true)
+2. Get overview: mcp__serena__get_symbols_overview("src/main/java/com/codepick/service/SolvedAcService.java")
+3. Find method: mcp__serena__find_symbol("searchProblems", depth=0, include_body=true)
+4. Edit method: mcp__serena__replace_symbol_body("searchProblems", relative_path="...", body="...")
+```
+
+### Serena Best Practices
+
+- **Always explore before editing**: Use overview tools to understand context
+- **Use symbolic editing for precision**: Prefer `replace_symbol_body` over line-based Edit
+- **Leverage depth parameter**: `depth=1` shows method signatures without bodies
+- **Use name_path patterns**: Relative paths like "Service/searchProblems" for targeted search
+
 ## Important Notes
 
 - **MacOS Netty Optimization**: Project includes `netty-resolver-dns-native-macos` for optimal WebClient performance
 - **Logging**: Set to DEBUG for `com.codepick` and event processing
 - **No Spring Security**: Authentication will use session-based approach (not JWT)
 - **TODO.md**: Always update this file when completing tasks or making architectural decisions
+- **Test Patterns**:
+  - Use constants for repeated mock parameters (e.g., `DEFAULT_PAGE`, `DEFAULT_SORT`)
+  - Use `@Nested` classes to group related test cases
+  - Mockito matchers: Use `any()` for nullable parameters, `anyInt()` for primitives
+  - When using ANY matcher in `verify()`, ALL parameters must be matchers
