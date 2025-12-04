@@ -36,7 +36,9 @@ public class SearchProblemResponse {
 			return SearchProblemResponse.of(0, List.of());
 		}
 
-		List<ProblemDto> problemDtos = ProblemDto.from(solvedAcResponse.getItems());
-		return SearchProblemResponse.of(solvedAcResponse.getCount(), problemDtos);
+		List<ProblemDto> problems = ProblemDto.from(solvedAcResponse.getItems());
+		int count = solvedAcResponse.getCount() != null ? solvedAcResponse.getCount() : problems.size();
+
+		return SearchProblemResponse.of(count, problems);
 	}
 }
