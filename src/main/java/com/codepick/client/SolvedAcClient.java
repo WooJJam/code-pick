@@ -1,5 +1,7 @@
 package com.codepick.client;
 
+import java.time.Duration;
+
 import com.codepick.dto.solvedac.response.SolvedAcSearchResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -38,7 +40,7 @@ public class SolvedAcClient {
 					.build())
 				.retrieve()
 				.bodyToMono(SolvedAcSearchResponse.class)
-				.block();
+				.block(Duration.ofSeconds(10));
 
 			if (response != null) {
 				log.info("Received {} problems from solved.ac API", response.getCount());
