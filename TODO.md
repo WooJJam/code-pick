@@ -358,6 +358,11 @@
 - [ ] 인덱스 추가 및 튜닝
 - [ ] Redis 캐싱 확대 적용
 - [ ] API 응답 시간 모니터링 및 개선
+- [ ] WebClient 설정 개선
+  - [ ] Connection timeout, Response timeout 설정 추가
+  - [ ] Retry 로직 구현 (exponential backoff)
+  - [ ] Connection Pool 최적화
+  - [ ] 에러 핸들링 개선 (SocketException: Connection reset 등)
 
 ### 모니터링 및 로깅
 
