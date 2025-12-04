@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,6 +32,11 @@ class SolvedAcServiceTest {
     private SolvedAcService solvedAcService;
 
     private SolvedAcSearchResponse mockApiResponse;
+
+    // 기본 파라미터 상수
+    private static final String DEFAULT_DIRECTION = null;
+    private static final int DEFAULT_PAGE = 1;
+    private static final String DEFAULT_SORT = "id";
 
     @BeforeEach
     void setUp() {
@@ -68,12 +73,16 @@ class SolvedAcServiceTest {
         String tierRange = "g4..s3";
         List<String> tags = List.of("implementation", "dfs");
         Integer minSolvedCount = 10000;
+        String direction = "asc";
+        int page = 1;
+        String sort = "random";
 
-        when(solvedAcClient.searchProblems(anyString())).thenReturn(mockApiResponse);
+        when(solvedAcClient.searchProblems(any(), any(), anyInt(), any()))
+                .thenReturn(mockApiResponse);
 
         // when
         SearchProblemResponse response = solvedAcService.searchProblems(
-                username, unsolved, tierRange, tags, minSolvedCount
+                username, unsolved, tierRange, tags, minSolvedCount, direction, page, sort
         );
 
         // then
@@ -82,7 +91,12 @@ class SolvedAcServiceTest {
         assertThat(response.getProblems()).hasSize(2);
 
         // 올바른 쿼리가 생성되었는지 확인
-        verify(solvedAcClient).searchProblems("!solved_by:woojjam2 (#implementation | #dfs) tier:g4..s3 s#10000..");
+        verify(solvedAcClient).searchProblems(
+                eq("!solved_by:woojjam2 (#implementation | #dfs) tier:g4..s3 s#10000.."),
+                eq(direction),
+                eq(page),
+                eq(sort)
+        );
     }
 
     @Test
@@ -92,13 +106,14 @@ class SolvedAcServiceTest {
         String username = "woojjam2";
         Boolean unsolved = false;
 
-        when(solvedAcClient.searchProblems(anyString())).thenReturn(mockApiResponse);
+        when(solvedAcClient.searchProblems(any(), any(), anyInt(), any()))
+                .thenReturn(mockApiResponse);
 
         // when
-        solvedAcService.searchProblems(username, unsolved, null, null, null);
+        solvedAcService.searchProblems(username, unsolved, null, null, null, DEFAULT_DIRECTION, DEFAULT_PAGE, DEFAULT_SORT);
 
         // then
-        verify(solvedAcClient).searchProblems("solved_by:woojjam2");
+        verify(solvedAcClient).searchProblems(eq("solved_by:woojjam2"), eq(DEFAULT_DIRECTION), eq(DEFAULT_PAGE), eq(DEFAULT_SORT));
     }
 
     @Test
@@ -107,13 +122,14 @@ class SolvedAcServiceTest {
         // given
         String username = "woojjam2";
 
-        when(solvedAcClient.searchProblems(anyString())).thenReturn(mockApiResponse);
+        when(solvedAcClient.searchProblems(any(), any(), anyInt(), any()))
+                .thenReturn(mockApiResponse);
 
         // when
-        solvedAcService.searchProblems(username, true, null, null, null);
+        solvedAcService.searchProblems(username, true, null, null, null, DEFAULT_DIRECTION, DEFAULT_PAGE, DEFAULT_SORT);
 
         // then
-        verify(solvedAcClient).searchProblems("!solved_by:woojjam2");
+        verify(solvedAcClient).searchProblems(eq("!solved_by:woojjam2"), eq(DEFAULT_DIRECTION), eq(DEFAULT_PAGE), eq(DEFAULT_SORT));
     }
 
     @Test
@@ -122,13 +138,14 @@ class SolvedAcServiceTest {
         // given
         String tierRange = "g4..s3";
 
-        when(solvedAcClient.searchProblems(anyString())).thenReturn(mockApiResponse);
+        when(solvedAcClient.searchProblems(any(), any(), anyInt(), any()))
+                .thenReturn(mockApiResponse);
 
         // when
-        solvedAcService.searchProblems(null, null, tierRange, null, null);
+        solvedAcService.searchProblems(null, null, tierRange, null, null, DEFAULT_DIRECTION, DEFAULT_PAGE, DEFAULT_SORT);
 
         // then
-        verify(solvedAcClient).searchProblems("tier:g4..s3");
+        verify(solvedAcClient).searchProblems(eq("tier:g4..s3"), eq(DEFAULT_DIRECTION), eq(DEFAULT_PAGE), eq(DEFAULT_SORT));
     }
 
     @Test
@@ -137,13 +154,14 @@ class SolvedAcServiceTest {
         // given
         List<String> tags = List.of("implementation", "dfs", "dp");
 
-        when(solvedAcClient.searchProblems(anyString())).thenReturn(mockApiResponse);
+        when(solvedAcClient.searchProblems(any(), any(), anyInt(), any()))
+                .thenReturn(mockApiResponse);
 
         // when
-        solvedAcService.searchProblems(null, null, null, tags, null);
+        solvedAcService.searchProblems(null, null, null, tags, null, DEFAULT_DIRECTION, DEFAULT_PAGE, DEFAULT_SORT);
 
         // then
-        verify(solvedAcClient).searchProblems("(#implementation | #dfs | #dp)");
+        verify(solvedAcClient).searchProblems(eq("(#implementation | #dfs | #dp)"), eq(DEFAULT_DIRECTION), eq(DEFAULT_PAGE), eq(DEFAULT_SORT));
     }
 
     @Test
@@ -152,13 +170,14 @@ class SolvedAcServiceTest {
         // given
         Integer minSolvedCount = 10000;
 
-        when(solvedAcClient.searchProblems(anyString())).thenReturn(mockApiResponse);
+        when(solvedAcClient.searchProblems(any(), any(), anyInt(), any()))
+                .thenReturn(mockApiResponse);
 
         // when
-        solvedAcService.searchProblems(null, null, null, null, minSolvedCount);
+        solvedAcService.searchProblems(null, null, null, null, minSolvedCount, DEFAULT_DIRECTION, DEFAULT_PAGE, DEFAULT_SORT);
 
         // then
-        verify(solvedAcClient).searchProblems("s#10000..");
+        verify(solvedAcClient).searchProblems(eq("s#10000.."), eq(DEFAULT_DIRECTION), eq(DEFAULT_PAGE), eq(DEFAULT_SORT));
     }
 
     @Test
@@ -168,13 +187,14 @@ class SolvedAcServiceTest {
         String username = "woojjam2";
         String tierRange = "g4..s3";
 
-        when(solvedAcClient.searchProblems(anyString())).thenReturn(mockApiResponse);
+        when(solvedAcClient.searchProblems(any(), any(), anyInt(), any()))
+                .thenReturn(mockApiResponse);
 
         // when
-        solvedAcService.searchProblems(username, true, tierRange, null, null);
+        solvedAcService.searchProblems(username, true, tierRange, null, null, DEFAULT_DIRECTION, DEFAULT_PAGE, DEFAULT_SORT);
 
         // then
-        verify(solvedAcClient).searchProblems("!solved_by:woojjam2 tier:g4..s3");
+        verify(solvedAcClient).searchProblems(eq("!solved_by:woojjam2 tier:g4..s3"), eq(DEFAULT_DIRECTION), eq(DEFAULT_PAGE), eq(DEFAULT_SORT));
     }
 
     @Test
@@ -185,11 +205,12 @@ class SolvedAcServiceTest {
         emptyResponse.setCount(0);
         emptyResponse.setItems(List.of());
 
-        when(solvedAcClient.searchProblems(anyString())).thenReturn(emptyResponse);
+        when(solvedAcClient.searchProblems(any(), any(), anyInt(), any()))
+                .thenReturn(emptyResponse);
 
         // when
         SearchProblemResponse response = solvedAcService.searchProblems(
-                "woojjam2", true, "r1..r5", null, null
+                "woojjam2", true, "r1..r5", null, null, DEFAULT_DIRECTION, DEFAULT_PAGE, DEFAULT_SORT
         );
 
         // then
@@ -202,11 +223,12 @@ class SolvedAcServiceTest {
     @DisplayName("null 응답을 올바르게 처리한다")
     void searchProblems_NullResponse() {
         // given
-        when(solvedAcClient.searchProblems(anyString())).thenReturn(null);
+        when(solvedAcClient.searchProblems(any(), any(), anyInt(), any()))
+                .thenReturn(null);
 
         // when
         SearchProblemResponse response = solvedAcService.searchProblems(
-                "woojjam2", true, "g4..s3", null, null
+                "woojjam2", true, "g4..s3", null, null, DEFAULT_DIRECTION, DEFAULT_PAGE, DEFAULT_SORT
         );
 
         // then
@@ -219,13 +241,14 @@ class SolvedAcServiceTest {
     @DisplayName("모든 파라미터가 null일 때 빈 쿼리를 생성한다")
     void searchProblems_AllNull() {
         // given
-        when(solvedAcClient.searchProblems(anyString())).thenReturn(mockApiResponse);
+        when(solvedAcClient.searchProblems(any(), any(), anyInt(), any()))
+                .thenReturn(mockApiResponse);
 
         // when
-        solvedAcService.searchProblems(null, null, null, null, null);
+        solvedAcService.searchProblems(null, null, null, null, null, DEFAULT_DIRECTION, DEFAULT_PAGE, DEFAULT_SORT);
 
         // then
-        verify(solvedAcClient).searchProblems("");
+        verify(solvedAcClient).searchProblems(eq(""), eq(DEFAULT_DIRECTION), eq(DEFAULT_PAGE), eq(DEFAULT_SORT));
     }
 
     @Test
@@ -234,13 +257,14 @@ class SolvedAcServiceTest {
         // given
         List<String> tags = List.of("implementation");
 
-        when(solvedAcClient.searchProblems(anyString())).thenReturn(mockApiResponse);
+        when(solvedAcClient.searchProblems(any(), any(), anyInt(), any()))
+                .thenReturn(mockApiResponse);
 
         // when
-        solvedAcService.searchProblems(null, null, null, tags, null);
+        solvedAcService.searchProblems(null, null, null, tags, null, DEFAULT_DIRECTION, DEFAULT_PAGE, DEFAULT_SORT);
 
         // then
-        verify(solvedAcClient).searchProblems("(#implementation)");
+        verify(solvedAcClient).searchProblems(eq("(#implementation)"), eq(DEFAULT_DIRECTION), eq(DEFAULT_PAGE), eq(DEFAULT_SORT));
     }
 
     @Test
@@ -249,12 +273,13 @@ class SolvedAcServiceTest {
         // given
         List<String> tags = List.of();
 
-        when(solvedAcClient.searchProblems(anyString())).thenReturn(mockApiResponse);
+        when(solvedAcClient.searchProblems(any(), any(), anyInt(), any()))
+                .thenReturn(mockApiResponse);
 
         // when
-        solvedAcService.searchProblems(null, null, null, tags, null);
+        solvedAcService.searchProblems(null, null, null, tags, null, DEFAULT_DIRECTION, DEFAULT_PAGE, DEFAULT_SORT);
 
         // then
-        verify(solvedAcClient).searchProblems("");
+        verify(solvedAcClient).searchProblems(eq(""), eq(DEFAULT_DIRECTION), eq(DEFAULT_PAGE), eq(DEFAULT_SORT));
     }
 }
