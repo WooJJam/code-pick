@@ -70,12 +70,13 @@ public class ProblemDto {
         }
 
         return tags.stream()
-                .filter(tag -> tag.getDisplayNames() != null && !tag.getDisplayNames().isEmpty())
-                .map(tag -> tag.getDisplayNames().stream()
-                        .filter(displayName -> "ko".equals(displayName.getLanguage()))
-                        .findFirst()
-                        .map(SolvedAcProblemResponse.DisplayName::getName)
-                        .orElse(tag.getKey()))
+                .map(tag -> tag.getDisplayNames() != null && !tag.getDisplayNames().isEmpty()
+                        ? tag.getDisplayNames().stream()
+                                .filter(displayName -> "ko".equals(displayName.getLanguage()))
+                                .findFirst()
+                                .map(SolvedAcProblemResponse.DisplayName::getName)
+                                .orElse(tag.getKey())
+                        : tag.getKey())
                 .collect(Collectors.toList());
     }
 }
