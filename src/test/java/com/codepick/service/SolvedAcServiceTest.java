@@ -4,6 +4,7 @@ import com.codepick.client.SolvedAcClient;
 import com.codepick.dto.solvedac.response.SearchProblemResponse;
 import com.codepick.dto.solvedac.response.SolvedAcProblemResponse;
 import com.codepick.dto.solvedac.response.SolvedAcSearchResponse;
+import com.codepick.validator.SolvedAcQueryValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,9 @@ class SolvedAcServiceTest {
 
     @Mock
     private SolvedAcClient solvedAcClient;
+
+    @Mock
+    private SolvedAcQueryValidator solvedAcQueryValidator;
 
     @InjectMocks
     private SolvedAcService solvedAcService;
